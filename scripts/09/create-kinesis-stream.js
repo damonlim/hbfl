@@ -1,23 +1,26 @@
 // Imports
-const {
-  CreateStreamCommand
-} = require('@aws-sdk/client-kinesis')
-const { sendKinesisCommand: sendCommand } = require('./helpers')
+const { CreateStreamCommand } = require("@aws-sdk/client-kinesis");
+const { sendKinesisCommand: sendCommand } = require("./helpers");
 
 // Declare local variables
-const streamName = 'hamster-race-results'
+const streamName = "hamster-race-results";
 
-async function execute () {
+async function execute() {
   try {
-    const response = await createKinesisStream(streamName)
-    console.log(response)
+    const response = await createKinesisStream(streamName);
+    console.log(response);
   } catch (err) {
-    console.error('Error creating Kinesis stream:', err)
+    console.error("Error creating Kinesis stream:", err);
   }
 }
 
-async function createKinesisStream (streamName) {
-  // TODO: Create kinesis stream
+async function createKinesisStream(streamName) {
+  const params = {
+    ShardCount: 1,
+    StreamName: streamName,
+  };
+  const command = new CreateStreamCommand(params);
+  return sendCommand(command);
 }
 
-execute()
+execute();
